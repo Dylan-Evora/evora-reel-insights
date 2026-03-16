@@ -333,7 +333,7 @@
         const rows = await fetchWithRange('/videos', {
           select: 'id,url,caption,latest_views,latest_likes,uploaded_at,first_seen_at',
           account_id: `eq.${accountId}`,
-          order: 'first_seen_at.desc',
+          order: 'uploaded_at.desc.nullsfirst',
         }, offset, offset + batch - 1);
         reels.push(...rows);
         if (rows.length < batch) break;
