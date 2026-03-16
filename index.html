@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Evora — Reel Insights</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080808;
+      --surface: #111;
+      --surface2: #1a1a1a;
+      --border: #222;
+      --border-active: #e70088;
+      --pink: #e70088;
+      --pink-dim: rgba(231,0,136,0.15);
+      --pink-glow: rgba(231,0,136,0.3);
+      --green: #00e676;
+      --green-dim: rgba(0,230,118,0.15);
+      --text: #fff;
+      --text-dim: rgba(255,255,255,0.5);
+      --text-faint: rgba(255,255,255,0.2);
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+    /* PIN Screen */
+    #pin-screen {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 20px;
+    }
+    #pin-screen h1 { font-size: 28px; font-weight: 800; color: var(--pink); margin-bottom: 8px; }
+    #pin-screen p { color: var(--text-dim); font-size: 14px; margin-bottom: 24px; }
+    #pin-input {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--text); font-size: 24px; text-align: center; letter-spacing: 8px;
+      padding: 16px 24px; width: 200px; outline: none;
+    }
+    #pin-input:focus { border-color: var(--pink); }
+    #pin-error { color: #ff4444; font-size: 13px; margin-top: 12px; display: none; }
+
+    /* App */
+    #app { display: none; max-width: 720px; margin: 0 auto; padding: 20px 16px 100px; }
+
+    /* Header */
+    .header { margin-bottom: 24px; }
+    .header h1 { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+    .header h1 span { color: var(--pink); }
+    .header .subtitle { color: var(--text-dim); font-size: 13px; }
+
+    /* Creator selector */
+    .selector { margin-bottom: 20px; }
+    .selector label { font-size: 12px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
+    .selector select {
+      width: 100%; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--text); font-family: inherit;
+      font-size: 15px; padding: 12px 16px; outline: none; cursor: pointer;
+      appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 16px center;
+    }
+    .selector select:focus { border-color: var(--pink); }
+
+    /* Progress bar */
+    .progress {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px; padding: 12px 16px;
+      background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border);
+    }
+    .progress-bar {
+      flex: 1; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden;
+    }
+    .progress-fill { height: 100%; background: var(--green); border-radius: 3px; transition: width 0.3s; }
+    .progress-text { font-size: 13px; font-weight: 600; color: var(--text-dim); white-space: nowrap; }
+    .progress-text span { color: var(--green); }
+
+    /* Loading */
+    .loading { text-align: center; padding: 60px 20px; color: var(--text-dim); font-size: 14px; }
+    .loading .spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--pink); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Reel card */
+    .reel-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      margin-bottom: 12px; overflow: hidden; transition: border-color 0.2s;
+    }
+    .reel-card.active { border-color: var(--pink); box-shadow: 0 0 20px var(--pink-dim); }
+    .reel-card.completed { border-color: rgba(0,230,118,0.3); }
+
+    .reel-header {
+      display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+      cursor: pointer; user-select: none;
+    }
+    .reel-number {
+      font-size: 12px; font-weight: 700; color: var(--text-faint);
+      min-width: 28px;
+    }
+    .reel-info { flex: 1; min-width: 0; }
+    .reel-caption {
+      font-size: 14px; font-weight: 500; color: var(--text);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    .reel-meta {
+      display: flex; gap: 12px; margin-top: 4px; font-size: 12px; color: var(--text-dim);
+    }
+    .reel-meta .sep { color: var(--text-faint); }
+    .reel-check {
+      font-size: 18px; min-width: 24px; text-align: center;
+    }
+    .reel-check.done { color: var(--green); }
+    .reel-check.empty { color: var(--text-faint); }
+
+    /* Reel form */
+    .reel-form { display: none; padding: 0 16px 16px; }
+    .reel-card.active .reel-form { display: block; }
+
+    .form-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label {
+      font-size: 11px; font-weight: 600; color: var(--text-dim);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+    }
+    .form-group input, .form-group select {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-family: inherit;
+      font-size: 14px; padding: 8px 12px; outline: none;
+    }
+    .form-group input:focus, .form-group select:focus { border-color: var(--pink); }
+    .form-group input::placeholder { color: var(--text-faint); }
+
+    .form-section-title {
+      font-size: 11px; font-weight: 700; color: var(--pink);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin: 14px 0 8px; grid-column: 1 / -1;
+    }
+
+    .country-row, .age-row {
+      display: grid; grid-template-columns: 1fr 80px; gap: 8px;
+      grid-column: 1 / -1;
+    }
+
+    .btn-save {
+      display: block; width: 100%; margin-top: 14px; padding: 12px;
+      background: var(--pink); color: #fff; border: none; border-radius: var(--radius);
+      font-family: inherit; font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .btn-save:hover { opacity: 0.85; }
+    .btn-save:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-save.saved { background: var(--green); }
+
+    .reel-link {
+      display: inline-block; margin-top: 8px; font-size: 12px;
+      color: var(--pink); text-decoration: none; opacity: 0.7;
+    }
+    .reel-link:hover { opacity: 1; }
+
+    /* Empty state */
+    .empty { text-align: center; padding: 60px 20px; color: var(--text-dim); }
+    .empty .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.3; }
+    .empty p { font-size: 14px; }
+  </style>
+</head>
+<body>
+
+<!-- PIN Screen -->
+<div id="pin-screen">
+  <h1>EVORA</h1>
+  <p>Reel Insights — Enter PIN</p>
+  <input type="password" id="pin-input" maxlength="6" placeholder="••••" autofocus>
+  <p id="pin-error">Incorrect PIN</p>
+</div>
+
+<!-- App -->
+<div id="app">
+  <div class="header">
+    <h1>Reel <span>Insights</span></h1>
+    <div class="subtitle">Fill in Instagram Insights data for each reel. Work newest → oldest.</div>
+  </div>
+
+  <div class="selector">
+    <label>Creator</label>
+    <select id="creator-select">
+      <option value="">Select a creator...</option>
+    </select>
+  </div>
+
+  <div id="progress-wrap" style="display:none">
+    <div class="progress">
+      <div class="progress-text"><span id="progress-done">0</span> / <span id="progress-total">0</span> reels completed</div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+  </div>
+
+  <div id="reel-list"></div>
+</div>
+
+<script>
+  // --- Config ---
+  const SUPABASE_URL = "https://jhawboejqoaoqgmkxzfq.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoYXdib2VqcW9hb3FnbWt4emZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNTgwMjcsImV4cCI6MjA4ODkzNDAyN30.4RfTKl-g28BZpVl2_DWLZ_blvXWosSdn-5J2Sja27hM";
+  const REST = SUPABASE_URL + "/rest/v1";
+  const HEADERS = {
+    "apikey": SUPABASE_KEY,
+    "Authorization": "Bearer " + SUPABASE_KEY,
+    "Content-Type": "application/json",
+  };
+
+  // --- PIN ---
+  const PIN_HASH = '158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab';
+  async function sha256(msg) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+  const pinInput = document.getElementById('pin-input');
+  const pinError = document.getElementById('pin-error');
+  const pinScreen = document.getElementById('pin-screen');
+  const app = document.getElementById('app');
+
+  pinInput.addEventListener('input', async () => {
+    const val = pinInput.value.trim();
+    if (val.length >= 4) {
+      const hash = await sha256(val);
+      if (hash === PIN_HASH) {
+        pinScreen.style.display = 'none';
+        app.style.display = 'block';
+        localStorage.setItem('evora-pin-ok', '1');
+        init();
+      } else {
+        pinError.style.display = 'block';
+        pinInput.value = '';
+      }
+    }
+  });
+
+  // Auto-unlock if previously authenticated
+  if (localStorage.getItem('evora-pin-ok') === '1') {
+    pinScreen.style.display = 'none';
+    app.style.display = 'block';
+    window.addEventListener('DOMContentLoaded', init);
+  }
+
+  // --- State ---
+  let creators = [];
+  let reels = [];
+  let insights = {};  // video_id -> insight row
+  let activeCardId = null;
+
+  // --- API helpers ---
+  async function apiFetch(path, params = {}) {
+    const url = new URL(REST + path);
+    Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
+    const resp = await fetch(url, { headers: HEADERS });
+    if (!resp.ok) throw new Error(`API ${resp.status}`);
+    return resp.json();
+  }
+
+  async function apiUpsert(path, body, conflict) {
+    const url = REST + path + (conflict ? `?on_conflict=${conflict}` : '');
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { ...HEADERS, 'Prefer': 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify(body),
+    });
+    if (!resp.ok) {
+      const text = await resp.text();
+      throw new Error(`Upsert ${resp.status}: ${text}`);
+    }
+    return resp.json();
+  }
+
+  // --- Init ---
+  async function init() {
+    try {
+      creators = await apiFetch('/accounts', {
+        select: 'id,handle',
+        role: 'eq.creator',
+        is_active: 'eq.true',
+        order: 'handle.asc',
+      });
+      const select = document.getElementById('creator-select');
+      creators.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = '@' + c.handle;
+        select.appendChild(opt);
+      });
+    } catch (e) {
+      console.error('Init failed:', e);
+    }
+  }
+
+  // --- Creator selected ---
+  document.getElementById('creator-select').addEventListener('change', async (e) => {
+    const accountId = e.target.value;
+    if (!accountId) {
+      document.getElementById('reel-list').innerHTML = '';
+      document.getElementById('progress-wrap').style.display = 'none';
+      return;
+    }
+    await loadReels(accountId);
+  });
+
+  async function loadReels(accountId) {
+    const listEl = document.getElementById('reel-list');
+    listEl.innerHTML = '<div class="loading"><div class="spinner"></div>Loading reels...</div>';
+    document.getElementById('progress-wrap').style.display = 'none';
+
+    try {
+      const creator = creators.find(c => c.id === accountId);
+      const handle = creator ? creator.handle : '';
+
+      // Fetch all videos for this account, newest first
+      // Paginate with Range header
+      reels = [];
+      let offset = 0;
+      const batch = 500;
+      while (true) {
+        const rows = await fetchWithRange('/videos', {
+          select: 'id,url,caption,latest_views,latest_likes,uploaded_at,first_seen_at',
+          account_id: `eq.${accountId}`,
+          order: 'first_seen_at.desc',
+        }, offset, offset + batch - 1);
+        reels.push(...rows);
+        if (rows.length < batch) break;
+        offset += batch;
+      }
+
+      // Fetch existing insights for this handle
+      insights = {};
+      const insightRows = await apiFetch('/reel_insights', {
+        select: 'video_id,avg_watch_time,retention_rate,reach_country_1,reach_country_1_pct,reach_country_2,reach_country_2_pct,reach_country_3,reach_country_3_pct,gender_male_pct,gender_female_pct,age_bracket_1,age_bracket_1_pct,age_bracket_2,age_bracket_2_pct,age_bracket_3,age_bracket_3_pct,followers_gained,shares,saves',
+        handle: `eq.${handle}`,
+        limit: '5000',
+      });
+      insightRows.forEach(r => { insights[r.video_id] = r; });
+
+      renderReels(handle);
+    } catch (e) {
+      console.error('Load reels failed:', e);
+      listEl.innerHTML = '<div class="empty"><div class="icon">⚠️</div><p>Failed to load reels. Try refreshing.</p></div>';
+    }
+  }
+
+  async function fetchWithRange(path, params, from, to) {
+    const url = new URL(REST + path);
+    Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
+    const resp = await fetch(url, {
+      headers: { ...HEADERS, 'Range': `${from}-${to}` },
+    });
+    if (resp.status === 416) return [];
+    if (!resp.ok) throw new Error(`API ${resp.status}`);
+    return resp.json();
+  }
+
+  // --- Render ---
+  function renderReels(handle) {
+    const listEl = document.getElementById('reel-list');
+    const completedCount = reels.filter(r => insights[r.id]).length;
+
+    // Progress
+    document.getElementById('progress-wrap').style.display = 'block';
+    document.getElementById('progress-done').textContent = completedCount;
+    document.getElementById('progress-total').textContent = reels.length;
+    const pct = reels.length > 0 ? (completedCount / reels.length * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+
+    if (reels.length === 0) {
+      listEl.innerHTML = '<div class="empty"><div class="icon">📭</div><p>No reels found for this creator.</p></div>';
+      return;
+    }
+
+    // Find first incomplete reel
+    const firstIncomplete = reels.findIndex(r => !insights[r.id]);
+    activeCardId = firstIncomplete >= 0 ? reels[firstIncomplete].id : null;
+
+    listEl.innerHTML = '';
+    reels.forEach((reel, idx) => {
+      const hasInsight = !!insights[reel.id];
+      const isActive = reel.id === activeCardId;
+      const card = buildReelCard(reel, idx, handle, hasInsight, isActive);
+      listEl.appendChild(card);
+    });
+
+    // Scroll to active card
+    if (activeCardId) {
+      setTimeout(() => {
+        const el = document.getElementById('card-' + activeCardId);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+  }
+
+  function buildReelCard(reel, idx, handle, hasInsight, isActive) {
+    const card = document.createElement('div');
+    card.className = 'reel-card' + (isActive ? ' active' : '') + (hasInsight ? ' completed' : '');
+    card.id = 'card-' + reel.id;
+
+    const caption = reel.caption ? reel.caption.substring(0, 80) : '(no caption)';
+    const date = reel.uploaded_at ? reel.uploaded_at.substring(0, 10) : '—';
+    const views = reel.latest_views ? reel.latest_views.toLocaleString() : '—';
+    const likes = reel.latest_likes ? reel.latest_likes.toLocaleString() : '—';
+
+    const existing = insights[reel.id] || {};
+
+    card.innerHTML = `
+      <div class="reel-header" onclick="toggleCard('${reel.id}', '${handle}')">
+        <div class="reel-number">#${idx + 1}</div>
+        <div class="reel-info">
+          <div class="reel-caption">${escHtml(caption)}</div>
+          <div class="reel-meta">
+            <span>📅 ${date}</span>
+            <span class="sep">·</span>
+            <span>👁 ${views}</span>
+            <span class="sep">·</span>
+            <span>❤️ ${likes}</span>
+          </div>
+        </div>
+        <div class="reel-check ${hasInsight ? 'done' : 'empty'}">${hasInsight ? '✅' : '○'}</div>
+      </div>
+      <div class="reel-form">
+        <a class="reel-link" href="${reel.url}" target="_blank">↗ Open in Instagram</a>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Avg Watch Time (sec)</label>
+            <input type="number" step="0.1" id="f-${reel.id}-awt" placeholder="e.g. 4.2" value="${existing.avg_watch_time ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>Retention Rate (%)</label>
+            <input type="number" step="0.1" id="f-${reel.id}-ret" placeholder="e.g. 62.5" value="${existing.retention_rate ?? ''}">
+          </div>
+
+          <div class="form-section-title">Reach by Country (top 3)</div>
+          <div class="country-row">
+            <input type="text" id="f-${reel.id}-c1" placeholder="Country 1" value="${existing.reach_country_1 ?? ''}">
+            <input type="number" step="0.1" id="f-${reel.id}-c1p" placeholder="%" value="${existing.reach_country_1_pct ?? ''}">
+          </div>
+          <div class="country-row">
+            <input type="text" id="f-${reel.id}-c2" placeholder="Country 2" value="${existing.reach_country_2 ?? ''}">
+            <input type="number" step="0.1" id="f-${reel.id}-c2p" placeholder="%" value="${existing.reach_country_2_pct ?? ''}">
+          </div>
+          <div class="country-row">
+            <input type="text" id="f-${reel.id}-c3" placeholder="Country 3" value="${existing.reach_country_3 ?? ''}">
+            <input type="number" step="0.1" id="f-${reel.id}-c3p" placeholder="%" value="${existing.reach_country_3_pct ?? ''}">
+          </div>
+
+          <div class="form-section-title">Gender Split</div>
+          <div class="form-group">
+            <label>Male %</label>
+            <input type="number" step="0.1" id="f-${reel.id}-gm" placeholder="e.g. 85" value="${existing.gender_male_pct ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>Female %</label>
+            <input type="number" step="0.1" id="f-${reel.id}-gf" placeholder="e.g. 15" value="${existing.gender_female_pct ?? ''}">
+          </div>
+
+          <div class="form-section-title">Age Split (top 3 brackets)</div>
+          <div class="age-row">
+            <input type="text" id="f-${reel.id}-a1" placeholder="e.g. 18-24" value="${existing.age_bracket_1 ?? ''}">
+            <input type="number" step="0.1" id="f-${reel.id}-a1p" placeholder="%" value="${existing.age_bracket_1_pct ?? ''}">
+          </div>
+          <div class="age-row">
+            <input type="text" id="f-${reel.id}-a2" placeholder="e.g. 25-34" value="${existing.age_bracket_2 ?? ''}">
+            <input type="number" step="0.1" id="f-${reel.id}-a2p" placeholder="%" value="${existing.age_bracket_2_pct ?? ''}">
+          </div>
+          <div class="age-row">
+            <input type="text" id="f-${reel.id}-a3" placeholder="e.g. 35-44" value="${existing.age_bracket_3 ?? ''}">
+            <input type="number" step="0.1" id="f-${reel.id}-a3p" placeholder="%" value="${existing.age_bracket_3_pct ?? ''}">
+          </div>
+
+          <div class="form-section-title">Engagement</div>
+          <div class="form-group">
+            <label>Followers Gained</label>
+            <input type="number" id="f-${reel.id}-fg" placeholder="e.g. 120" value="${existing.followers_gained ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>Shares</label>
+            <input type="number" id="f-${reel.id}-sh" placeholder="e.g. 340" value="${existing.shares ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>Saves</label>
+            <input type="number" id="f-${reel.id}-sv" placeholder="e.g. 890" value="${existing.saves ?? ''}">
+          </div>
+        </div>
+        <button class="btn-save" id="btn-${reel.id}" onclick="saveInsight('${reel.id}', '${handle}')">Save & Next</button>
+      </div>
+    `;
+    return card;
+  }
+
+  function escHtml(s) {
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function toggleCard(videoId, handle) {
+    if (activeCardId === videoId) {
+      // Collapse
+      const old = document.getElementById('card-' + videoId);
+      if (old) old.classList.remove('active');
+      activeCardId = null;
+      return;
+    }
+    // Collapse old
+    if (activeCardId) {
+      const old = document.getElementById('card-' + activeCardId);
+      if (old) old.classList.remove('active');
+    }
+    // Expand new
+    activeCardId = videoId;
+    const card = document.getElementById('card-' + videoId);
+    if (card) {
+      card.classList.add('active');
+      setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
+    }
+  }
+
+  async function saveInsight(videoId, handle) {
+    const btn = document.getElementById('btn-' + videoId);
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
+    const v = (id) => {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : '';
+    };
+    const num = (id) => { const n = parseFloat(v(id)); return isNaN(n) ? null : n; };
+    const int = (id) => { const n = parseInt(v(id), 10); return isNaN(n) ? null : n; };
+
+    const body = {
+      video_id: videoId,
+      handle: handle,
+      avg_watch_time: num(`f-${videoId}-awt`),
+      retention_rate: num(`f-${videoId}-ret`),
+      reach_country_1: v(`f-${videoId}-c1`) || null,
+      reach_country_1_pct: num(`f-${videoId}-c1p`),
+      reach_country_2: v(`f-${videoId}-c2`) || null,
+      reach_country_2_pct: num(`f-${videoId}-c2p`),
+      reach_country_3: v(`f-${videoId}-c3`) || null,
+      reach_country_3_pct: num(`f-${videoId}-c3p`),
+      gender_male_pct: num(`f-${videoId}-gm`),
+      gender_female_pct: num(`f-${videoId}-gf`),
+      age_bracket_1: v(`f-${videoId}-a1`) || null,
+      age_bracket_1_pct: num(`f-${videoId}-a1p`),
+      age_bracket_2: v(`f-${videoId}-a2`) || null,
+      age_bracket_2_pct: num(`f-${videoId}-a2p`),
+      age_bracket_3: v(`f-${videoId}-a3`) || null,
+      age_bracket_3_pct: num(`f-${videoId}-a3p`),
+      followers_gained: int(`f-${videoId}-fg`),
+      shares: int(`f-${videoId}-sh`),
+      saves: int(`f-${videoId}-sv`),
+      updated_at: new Date().toISOString(),
+    };
+
+    try {
+      const result = await apiUpsert('/reel_insights', body, 'video_id');
+      insights[videoId] = result[0] || body;
+
+      // Update card UI
+      const card = document.getElementById('card-' + videoId);
+      if (card) {
+        card.classList.add('completed');
+        card.classList.remove('active');
+        const check = card.querySelector('.reel-check');
+        if (check) { check.className = 'reel-check done'; check.textContent = '✅'; }
+      }
+
+      btn.textContent = 'Saved ✓';
+      btn.classList.add('saved');
+
+      // Update progress
+      const completedCount = reels.filter(r => insights[r.id]).length;
+      document.getElementById('progress-done').textContent = completedCount;
+      const pct = reels.length > 0 ? (completedCount / reels.length * 100) : 0;
+      document.getElementById('progress-fill').style.width = pct + '%';
+
+      // Auto-advance to next incomplete reel
+      const currentIdx = reels.findIndex(r => r.id === videoId);
+      let nextIdx = -1;
+      for (let i = currentIdx + 1; i < reels.length; i++) {
+        if (!insights[reels[i].id]) { nextIdx = i; break; }
+      }
+      if (nextIdx >= 0) {
+        activeCardId = reels[nextIdx].id;
+        const nextCard = document.getElementById('card-' + activeCardId);
+        if (nextCard) {
+          nextCard.classList.add('active');
+          setTimeout(() => nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200);
+        }
+      } else {
+        activeCardId = null;
+      }
+    } catch (e) {
+      console.error('Save failed:', e);
+      btn.textContent = 'Error — Retry';
+      btn.disabled = false;
+    }
+  }
+
+  // URL PIN support
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlPin = urlParams.get('pin');
+  if (urlPin) {
+    sha256(urlPin).then(hash => {
+      if (hash === PIN_HASH) {
+        pinScreen.style.display = 'none';
+        app.style.display = 'block';
+        localStorage.setItem('evora-pin-ok', '1');
+        init();
+      }
+    });
+  }
+</script>
+</body>
+</html>
