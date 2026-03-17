@@ -14,7 +14,6 @@
       --border-active: #e70088;
       --pink: #e70088;
       --pink-dim: rgba(231,0,136,0.15);
-      --pink-glow: rgba(231,0,136,0.3);
       --green: #00e676;
       --green-dim: rgba(0,230,118,0.15);
       --text: #fff;
@@ -25,16 +24,14 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; -webkit-font-smoothing: antialiased;
     }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
 
-    /* PIN Screen */
+    /* PIN */
     #pin-screen {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       min-height: 100vh; padding: 20px;
@@ -51,14 +48,12 @@
 
     /* App */
     #app { display: none; max-width: 720px; margin: 0 auto; padding: 20px 16px 100px; }
-
-    /* Header */
     .header { margin-bottom: 24px; }
     .header h1 { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
     .header h1 span { color: var(--pink); }
     .header .subtitle { color: var(--text-dim); font-size: 13px; }
 
-    /* Creator selector */
+    /* Selector */
     .selector { margin-bottom: 20px; }
     .selector label { font-size: 12px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
     .selector select {
@@ -71,25 +66,22 @@
     }
     .selector select:focus { border-color: var(--pink); }
 
-    /* Progress bar */
+    /* Progress */
     .progress {
       display: flex; align-items: center; gap: 12px;
       margin-bottom: 20px; padding: 12px 16px;
       background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border);
     }
-    .progress-bar {
-      flex: 1; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden;
-    }
+    .progress-bar { flex: 1; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--green); border-radius: 3px; transition: width 0.3s; }
     .progress-text { font-size: 13px; font-weight: 600; color: var(--text-dim); white-space: nowrap; }
     .progress-text span { color: var(--green); }
 
-    /* Loading */
     .loading { text-align: center; padding: 60px 20px; color: var(--text-dim); font-size: 14px; }
     .loading .spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--pink); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Reel card */
+    /* Card */
     .reel-card {
       background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
       margin-bottom: 12px; overflow: hidden; transition: border-color 0.2s;
@@ -101,33 +93,23 @@
       display: flex; align-items: center; gap: 12px; padding: 14px 16px;
       cursor: pointer; user-select: none;
     }
-    .reel-number {
-      font-size: 12px; font-weight: 700; color: var(--text-faint);
-      min-width: 28px;
-    }
+    .reel-number { font-size: 12px; font-weight: 700; color: var(--text-faint); min-width: 28px; }
     .reel-info { flex: 1; min-width: 0; }
     .reel-caption {
       font-size: 14px; font-weight: 500; color: var(--text);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      max-width: 100%;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
     }
-    .reel-meta {
-      display: flex; gap: 12px; margin-top: 4px; font-size: 12px; color: var(--text-dim);
-    }
+    .reel-meta { display: flex; gap: 12px; margin-top: 4px; font-size: 12px; color: var(--text-dim); }
     .reel-meta .sep { color: var(--text-faint); }
-    .reel-check {
-      font-size: 18px; min-width: 24px; text-align: center;
-    }
+    .reel-check { font-size: 18px; min-width: 24px; text-align: center; }
     .reel-check.done { color: var(--green); }
     .reel-check.empty { color: var(--text-faint); }
 
-    /* Reel form */
+    /* Form */
     .reel-form { display: none; padding: 0 16px 16px; }
     .reel-card.active .reel-form { display: block; }
 
-    .form-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .form-group { display: flex; flex-direction: column; }
     .form-group.full { grid-column: 1 / -1; }
     .form-group label {
@@ -148,10 +130,17 @@
       margin: 14px 0 8px; grid-column: 1 / -1;
     }
 
-    .country-row, .age-row {
-      display: grid; grid-template-columns: 1fr 80px; gap: 8px;
-      grid-column: 1 / -1;
+    .country-row {
+      display: grid; grid-template-columns: 1fr 80px; gap: 8px; grid-column: 1 / -1;
     }
+    .country-row select {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-family: inherit;
+      font-size: 14px; padding: 8px 12px; outline: none; appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center;
+    }
+    .country-row select:focus { border-color: var(--pink); }
 
     .btn-save {
       display: block; width: 100%; margin-top: 14px; padding: 12px;
@@ -164,20 +153,17 @@
     .btn-save.saved { background: var(--green); }
 
     .reel-link {
-      display: inline-block; margin-top: 8px; font-size: 12px;
+      display: inline-block; margin-top: 8px; margin-bottom: 4px; font-size: 12px;
       color: var(--pink); text-decoration: none; opacity: 0.7;
     }
     .reel-link:hover { opacity: 1; }
 
-    /* Empty state */
     .empty { text-align: center; padding: 60px 20px; color: var(--text-dim); }
     .empty .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.3; }
-    .empty p { font-size: 14px; }
   </style>
 </head>
 <body>
 
-<!-- PIN Screen -->
 <div id="pin-screen">
   <h1>EVORA</h1>
   <p>Reel Insights — Enter PIN</p>
@@ -185,18 +171,15 @@
   <p id="pin-error">Incorrect PIN</p>
 </div>
 
-<!-- App -->
 <div id="app">
   <div class="header">
     <h1>Reel <span>Insights</span></h1>
-    <div class="subtitle">Fill in Instagram Insights data for each reel. Work newest → oldest.</div>
+    <div class="subtitle">Fill in Instagram Insights data for each reel. Newest → oldest.</div>
   </div>
 
   <div class="selector">
     <label>Creator</label>
-    <select id="creator-select">
-      <option value="">Select a creator...</option>
-    </select>
+    <select id="creator-select"><option value="">Select a creator...</option></select>
   </div>
 
   <div id="progress-wrap" style="display:none">
@@ -210,17 +193,24 @@
 </div>
 
 <script>
-  // --- Config ---
   const SUPABASE_URL = "https://jhawboejqoaoqgmkxzfq.supabase.co";
   const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoYXdib2VqcW9hb3FnbWt4emZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNTgwMjcsImV4cCI6MjA4ODkzNDAyN30.4RfTKl-g28BZpVl2_DWLZ_blvXWosSdn-5J2Sja27hM";
   const REST = SUPABASE_URL + "/rest/v1";
-  const HEADERS = {
-    "apikey": SUPABASE_KEY,
-    "Authorization": "Bearer " + SUPABASE_KEY,
-    "Content-Type": "application/json",
-  };
+  const HEADERS = { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY, "Content-Type": "application/json" };
 
-  // --- PIN ---
+  // Country list for dropdowns
+  const COUNTRIES = [
+    "","United States","United Kingdom","Canada","Australia","India","Germany","France","Brazil",
+    "Mexico","Spain","Italy","Netherlands","Turkey","Indonesia","Philippines","Nigeria","South Africa",
+    "Colombia","Argentina","Egypt","Saudi Arabia","Pakistan","Japan","South Korea","Thailand",
+    "Vietnam","Malaysia","Poland","Sweden","Norway","Denmark","Belgium","Switzerland","Ireland",
+    "Portugal","Romania","Czech Republic","Greece","Israel","UAE","Chile","Peru","New Zealand",
+    "Singapore","Kenya","Ghana","Morocco","Algeria","Iraq","Bangladesh","Ukraine","Russia","Other"
+  ];
+
+  const INSIGHT_FIELDS = 'video_id,views_followers_pct,views_non_followers_pct,reach_followers_pct,reach_non_followers_pct,source_profile_pct,source_reels_tab_pct,source_feed_pct,source_explore_pct,retention_1s_pct,retention_2s_pct,retention_3s_pct,avg_watch_time,followers_gained,gender_male_pct,gender_female_pct,reach_country_1,reach_country_1_pct,reach_country_2,reach_country_2_pct,reach_country_3,reach_country_3_pct,reach_country_4,reach_country_4_pct,reach_country_5,reach_country_5_pct,age_18_24_pct,age_25_34_pct,age_35_44_pct,age_45_54_pct,age_55_64_pct,age_65_plus_pct,shares,saves';
+
+  // PIN
   const PIN_HASH = '158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab';
   async function sha256(msg) {
     const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
@@ -235,32 +225,25 @@
     const val = pinInput.value.trim();
     if (val.length >= 4) {
       const hash = await sha256(val);
-      if (hash === PIN_HASH) {
-        pinScreen.style.display = 'none';
-        app.style.display = 'block';
-        localStorage.setItem('evora-pin-ok', '1');
-        init();
-      } else {
-        pinError.style.display = 'block';
-        pinInput.value = '';
-      }
+      if (hash === PIN_HASH) { unlock(); } else { pinError.style.display = 'block'; pinInput.value = ''; }
     }
   });
 
-  // Auto-unlock if previously authenticated
+  function unlock() {
+    pinScreen.style.display = 'none';
+    app.style.display = 'block';
+    localStorage.setItem('evora-pin-ok', '1');
+    init();
+  }
+
   if (localStorage.getItem('evora-pin-ok') === '1') {
     pinScreen.style.display = 'none';
     app.style.display = 'block';
     window.addEventListener('DOMContentLoaded', init);
   }
 
-  // --- State ---
-  let creators = [];
-  let reels = [];
-  let insights = {};  // video_id -> insight row
-  let activeCardId = null;
+  let creators = [], reels = [], insights = {}, activeCardId = null;
 
-  // --- API helpers ---
   async function apiFetch(path, params = {}) {
     const url = new URL(REST + path);
     Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
@@ -276,368 +259,331 @@
       headers: { ...HEADERS, 'Prefer': 'resolution=merge-duplicates,return=representation' },
       body: JSON.stringify(body),
     });
-    if (!resp.ok) {
-      const text = await resp.text();
-      throw new Error(`Upsert ${resp.status}: ${text}`);
-    }
+    if (!resp.ok) { const t = await resp.text(); throw new Error(`Upsert ${resp.status}: ${t}`); }
     return resp.json();
   }
 
-  // --- Init ---
-  async function init() {
-    try {
-      creators = await apiFetch('/accounts', {
-        select: 'id,handle',
-        role: 'eq.creator',
-        is_active: 'eq.true',
-        order: 'handle.asc',
-      });
-      const select = document.getElementById('creator-select');
-      creators.forEach(c => {
-        const opt = document.createElement('option');
-        opt.value = c.id;
-        opt.textContent = '@' + c.handle;
-        select.appendChild(opt);
-      });
-    } catch (e) {
-      console.error('Init failed:', e);
-    }
+  async function fetchWithRange(path, params, from, to) {
+    const url = new URL(REST + path);
+    Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
+    const resp = await fetch(url, { headers: { ...HEADERS, 'Range': `${from}-${to}` } });
+    if (resp.status === 416) return [];
+    if (!resp.ok) throw new Error(`API ${resp.status}`);
+    return resp.json();
   }
 
-  // --- Creator selected ---
+  async function init() {
+    creators = await apiFetch('/accounts', { select: 'id,handle', role: 'eq.creator', is_active: 'eq.true', order: 'handle.asc' });
+    const sel = document.getElementById('creator-select');
+    creators.forEach(c => { const o = document.createElement('option'); o.value = c.id; o.textContent = '@' + c.handle; sel.appendChild(o); });
+  }
+
   document.getElementById('creator-select').addEventListener('change', async (e) => {
-    const accountId = e.target.value;
-    if (!accountId) {
-      document.getElementById('reel-list').innerHTML = '';
-      document.getElementById('progress-wrap').style.display = 'none';
-      return;
-    }
-    await loadReels(accountId);
+    if (!e.target.value) { document.getElementById('reel-list').innerHTML = ''; document.getElementById('progress-wrap').style.display = 'none'; return; }
+    await loadReels(e.target.value);
   });
 
   async function loadReels(accountId) {
     const listEl = document.getElementById('reel-list');
     listEl.innerHTML = '<div class="loading"><div class="spinner"></div>Loading reels...</div>';
     document.getElementById('progress-wrap').style.display = 'none';
-
     try {
       const creator = creators.find(c => c.id === accountId);
       const handle = creator ? creator.handle : '';
-
-      // Fetch all videos for this account, newest first
-      // Paginate with Range header
       reels = [];
       let offset = 0;
-      const batch = 500;
       while (true) {
         const rows = await fetchWithRange('/videos', {
-          select: 'id,url,caption,latest_views,latest_likes,uploaded_at,first_seen_at',
+          select: 'id,url,caption,latest_views,latest_likes,uploaded_at',
           account_id: `eq.${accountId}`,
           uploaded_at: `lt.${new Date(Date.now() - 24*60*60*1000).toISOString().slice(0,10)}`,
           order: 'uploaded_at.desc.nullsfirst',
-        }, offset, offset + batch - 1);
+        }, offset, offset + 499);
         reels.push(...rows);
-        if (rows.length < batch) break;
-        offset += batch;
+        if (rows.length < 500) break;
+        offset += 500;
       }
-
-      // Fetch existing insights for this handle
       insights = {};
-      const insightRows = await apiFetch('/reel_insights', {
-        select: 'video_id,avg_watch_time,retention_rate,reach_country_1,reach_country_1_pct,reach_country_2,reach_country_2_pct,reach_country_3,reach_country_3_pct,gender_male_pct,gender_female_pct,age_bracket_1,age_bracket_1_pct,age_bracket_2,age_bracket_2_pct,age_bracket_3,age_bracket_3_pct,age_bracket_4,age_bracket_4_pct,age_bracket_5,age_bracket_5_pct,followers_gained,shares,saves',
-        handle: `eq.${handle}`,
-        limit: '5000',
-      });
-      insightRows.forEach(r => { insights[r.video_id] = r; });
-
+      const ir = await apiFetch('/reel_insights', { select: INSIGHT_FIELDS, handle: `eq.${handle}`, limit: '5000' });
+      ir.forEach(r => { insights[r.video_id] = r; });
       renderReels(handle);
     } catch (e) {
-      console.error('Load reels failed:', e);
-      listEl.innerHTML = '<div class="empty"><div class="icon">⚠️</div><p>Failed to load reels. Try refreshing.</p></div>';
+      console.error(e);
+      listEl.innerHTML = '<div class="empty"><div class="icon">⚠️</div><p>Failed to load reels.</p></div>';
     }
   }
 
-  async function fetchWithRange(path, params, from, to) {
-    const url = new URL(REST + path);
-    Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
-    const resp = await fetch(url, {
-      headers: { ...HEADERS, 'Range': `${from}-${to}` },
-    });
-    if (resp.status === 416) return [];
-    if (!resp.ok) throw new Error(`API ${resp.status}`);
-    return resp.json();
+  function countryOptions(selected) {
+    return COUNTRIES.map(c =>
+      `<option value="${c}" ${c === (selected || '') ? 'selected' : ''}>${c || '— Select —'}</option>`
+    ).join('');
   }
 
-  // --- Render ---
   function renderReels(handle) {
     const listEl = document.getElementById('reel-list');
-    const completedCount = reels.filter(r => insights[r.id]).length;
-
-    // Progress
+    const done = reels.filter(r => insights[r.id]).length;
     document.getElementById('progress-wrap').style.display = 'block';
-    document.getElementById('progress-done').textContent = completedCount;
+    document.getElementById('progress-done').textContent = done;
     document.getElementById('progress-total').textContent = reels.length;
-    const pct = reels.length > 0 ? (completedCount / reels.length * 100) : 0;
-    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-fill').style.width = (reels.length > 0 ? done / reels.length * 100 : 0) + '%';
 
-    if (reels.length === 0) {
-      listEl.innerHTML = '<div class="empty"><div class="icon">📭</div><p>No reels found for this creator.</p></div>';
-      return;
-    }
+    if (!reels.length) { listEl.innerHTML = '<div class="empty"><div class="icon">📭</div><p>No reels found.</p></div>'; return; }
 
-    // Find first incomplete reel
-    const firstIncomplete = reels.findIndex(r => !insights[r.id]);
-    activeCardId = firstIncomplete >= 0 ? reels[firstIncomplete].id : null;
-
+    const first = reels.findIndex(r => !insights[r.id]);
+    activeCardId = first >= 0 ? reels[first].id : null;
     listEl.innerHTML = '';
-    reels.forEach((reel, idx) => {
-      const hasInsight = !!insights[reel.id];
-      const isActive = reel.id === activeCardId;
-      const card = buildReelCard(reel, idx, handle, hasInsight, isActive);
-      listEl.appendChild(card);
-    });
-
-    // Scroll to active card
-    if (activeCardId) {
-      setTimeout(() => {
-        const el = document.getElementById('card-' + activeCardId);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 100);
-    }
+    reels.forEach((r, i) => listEl.appendChild(buildCard(r, i, handle, !!insights[r.id], r.id === activeCardId)));
+    if (activeCardId) setTimeout(() => { const el = document.getElementById('card-' + activeCardId); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
   }
 
-  function buildReelCard(reel, idx, handle, hasInsight, isActive) {
-    const card = document.createElement('div');
-    card.className = 'reel-card' + (isActive ? ' active' : '') + (hasInsight ? ' completed' : '');
-    card.id = 'card-' + reel.id;
+  function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
-    const caption = reel.caption ? reel.caption.substring(0, 80) : '(no caption)';
+  function buildCard(reel, idx, handle, done, active) {
+    const card = document.createElement('div');
+    card.className = 'reel-card' + (active ? ' active' : '') + (done ? ' completed' : '');
+    card.id = 'card-' + reel.id;
+    const cap = reel.caption ? reel.caption.substring(0, 80) : '(no caption)';
     const date = reel.uploaded_at ? reel.uploaded_at.substring(0, 10) : '—';
     const views = reel.latest_views ? reel.latest_views.toLocaleString() : '—';
     const likes = reel.latest_likes ? reel.latest_likes.toLocaleString() : '—';
-
-    const existing = insights[reel.id] || {};
+    const e = insights[reel.id] || {};
+    const id = reel.id;
 
     card.innerHTML = `
-      <div class="reel-header" onclick="toggleCard('${reel.id}', '${handle}')">
+      <div class="reel-header" onclick="toggleCard('${id}')">
         <div class="reel-number">#${idx + 1}</div>
         <div class="reel-info">
-          <div class="reel-caption">${escHtml(caption)}</div>
+          <div class="reel-caption">${escHtml(cap)}</div>
           <div class="reel-meta">
-            <span>📅 ${date}</span>
-            <span class="sep">·</span>
-            <span>👁 ${views}</span>
-            <span class="sep">·</span>
+            <span>📅 ${date}</span><span class="sep">·</span>
+            <span>👁 ${views}</span><span class="sep">·</span>
             <span>❤️ ${likes}</span>
           </div>
         </div>
-        <div class="reel-check ${hasInsight ? 'done' : 'empty'}">${hasInsight ? '✅' : '○'}</div>
+        <div class="reel-check ${done ? 'done' : 'empty'}">${done ? '✅' : '○'}</div>
       </div>
       <div class="reel-form">
         <a class="reel-link" href="${reel.url}" target="_blank">↗ Open in Instagram</a>
         <div class="form-grid">
+
+          <div class="form-section-title">Views Breakdown</div>
+          <div class="form-group">
+            <label>Followers %</label>
+            <input type="number" step="0.1" id="f-${id}-vf" placeholder="e.g. 46.4" value="${e.views_followers_pct ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>Non-Followers %</label>
+            <input type="number" step="0.1" id="f-${id}-vnf" placeholder="e.g. 53.6" value="${e.views_non_followers_pct ?? ''}">
+          </div>
+
+          <div class="form-section-title">Reach Breakdown</div>
+          <div class="form-group">
+            <label>Followers %</label>
+            <input type="number" step="0.1" id="f-${id}-rf" placeholder="e.g. 46.4" value="${e.reach_followers_pct ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>Non-Followers %</label>
+            <input type="number" step="0.1" id="f-${id}-rnf" placeholder="e.g. 53.6" value="${e.reach_non_followers_pct ?? ''}">
+          </div>
+
+          <div class="form-section-title">Top Sources of Views</div>
+          <div class="form-group">
+            <label>Profile %</label>
+            <input type="number" step="0.1" id="f-${id}-sp" placeholder="e.g. 42.8" value="${e.source_profile_pct ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>Reels Tab %</label>
+            <input type="number" step="0.1" id="f-${id}-sr" placeholder="e.g. 37.1" value="${e.source_reels_tab_pct ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>Feed %</label>
+            <input type="number" step="0.1" id="f-${id}-sf" placeholder="e.g. 12.1" value="${e.source_feed_pct ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>Explore %</label>
+            <input type="number" step="0.1" id="f-${id}-se" placeholder="e.g. 7.8" value="${e.source_explore_pct ?? ''}">
+          </div>
+
+          <div class="form-section-title">Retention</div>
+          <div class="form-group">
+            <label>1 Second %</label>
+            <input type="number" step="0.1" id="f-${id}-r1" placeholder="e.g. 85.2" value="${e.retention_1s_pct ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>2 Seconds %</label>
+            <input type="number" step="0.1" id="f-${id}-r2" placeholder="e.g. 72.1" value="${e.retention_2s_pct ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>3 Seconds %</label>
+            <input type="number" step="0.1" id="f-${id}-r3" placeholder="e.g. 61.5" value="${e.retention_3s_pct ?? ''}">
+          </div>
           <div class="form-group">
             <label>Avg Watch Time (sec)</label>
-            <input type="number" step="0.1" id="f-${reel.id}-awt" placeholder="e.g. 4.2" value="${existing.avg_watch_time ?? ''}">
-          </div>
-          <div class="form-group">
-            <label>Retention Rate (%)</label>
-            <input type="number" step="0.1" id="f-${reel.id}-ret" placeholder="e.g. 62.5" value="${existing.retention_rate ?? ''}">
-          </div>
-
-          <div class="form-section-title">Reach by Country (top 3)</div>
-          <div class="country-row">
-            <input type="text" id="f-${reel.id}-c1" placeholder="Country 1" value="${existing.reach_country_1 ?? ''}">
-            <input type="number" step="0.1" id="f-${reel.id}-c1p" placeholder="%" value="${existing.reach_country_1_pct ?? ''}">
-          </div>
-          <div class="country-row">
-            <input type="text" id="f-${reel.id}-c2" placeholder="Country 2" value="${existing.reach_country_2 ?? ''}">
-            <input type="number" step="0.1" id="f-${reel.id}-c2p" placeholder="%" value="${existing.reach_country_2_pct ?? ''}">
-          </div>
-          <div class="country-row">
-            <input type="text" id="f-${reel.id}-c3" placeholder="Country 3" value="${existing.reach_country_3 ?? ''}">
-            <input type="number" step="0.1" id="f-${reel.id}-c3p" placeholder="%" value="${existing.reach_country_3_pct ?? ''}">
-          </div>
-
-          <div class="form-section-title">Gender Split</div>
-          <div class="form-group">
-            <label>Male %</label>
-            <input type="number" step="0.1" id="f-${reel.id}-gm" placeholder="e.g. 85" value="${existing.gender_male_pct ?? ''}">
-          </div>
-          <div class="form-group">
-            <label>Female %</label>
-            <input type="number" step="0.1" id="f-${reel.id}-gf" placeholder="e.g. 15" value="${existing.gender_female_pct ?? ''}">
-          </div>
-
-          <div class="form-section-title">Age Split</div>
-          <div class="age-row">
-            <input type="text" id="f-${reel.id}-a1" placeholder="e.g. 18-24" value="${existing.age_bracket_1 ?? ''}">
-            <input type="number" step="0.1" id="f-${reel.id}-a1p" placeholder="%" value="${existing.age_bracket_1_pct ?? ''}">
-          </div>
-          <div class="age-row">
-            <input type="text" id="f-${reel.id}-a2" placeholder="e.g. 25-34" value="${existing.age_bracket_2 ?? ''}">
-            <input type="number" step="0.1" id="f-${reel.id}-a2p" placeholder="%" value="${existing.age_bracket_2_pct ?? ''}">
-          </div>
-          <div class="age-row">
-            <input type="text" id="f-${reel.id}-a3" placeholder="e.g. 35-44" value="${existing.age_bracket_3 ?? ''}">
-            <input type="number" step="0.1" id="f-${reel.id}-a3p" placeholder="%" value="${existing.age_bracket_3_pct ?? ''}">
-          </div>
-          <div class="age-row">
-            <input type="text" id="f-${reel.id}-a4" placeholder="e.g. 45-64" value="${existing.age_bracket_4 ?? ''}">
-            <input type="number" step="0.1" id="f-${reel.id}-a4p" placeholder="%" value="${existing.age_bracket_4_pct ?? ''}">
-          </div>
-          <div class="age-row">
-            <input type="text" id="f-${reel.id}-a5" placeholder="e.g. 65+" value="${existing.age_bracket_5 ?? ''}">
-            <input type="number" step="0.1" id="f-${reel.id}-a5p" placeholder="%" value="${existing.age_bracket_5_pct ?? ''}">
+            <input type="number" step="0.1" id="f-${id}-awt" placeholder="e.g. 4.2" value="${e.avg_watch_time ?? ''}">
           </div>
 
           <div class="form-section-title">Engagement</div>
           <div class="form-group">
-            <label>Followers Gained</label>
-            <input type="number" id="f-${reel.id}-fg" placeholder="e.g. 120" value="${existing.followers_gained ?? ''}">
+            <label>Follows</label>
+            <input type="number" id="f-${id}-fg" placeholder="e.g. 120" value="${e.followers_gained ?? ''}">
           </div>
           <div class="form-group">
             <label>Shares</label>
-            <input type="number" id="f-${reel.id}-sh" placeholder="e.g. 340" value="${existing.shares ?? ''}">
+            <input type="number" id="f-${id}-sh" placeholder="e.g. 340" value="${e.shares ?? ''}">
+          </div>
+          <div class="form-group full">
+            <label>Saves</label>
+            <input type="number" id="f-${id}-sv" placeholder="e.g. 890" value="${e.saves ?? ''}">
+          </div>
+
+          <div class="form-section-title">Gender</div>
+          <div class="form-group">
+            <label>Male %</label>
+            <input type="number" step="0.1" id="f-${id}-gm" placeholder="e.g. 85" value="${e.gender_male_pct ?? ''}">
           </div>
           <div class="form-group">
-            <label>Saves</label>
-            <input type="number" id="f-${reel.id}-sv" placeholder="e.g. 890" value="${existing.saves ?? ''}">
+            <label>Female %</label>
+            <input type="number" step="0.1" id="f-${id}-gf" placeholder="e.g. 15" value="${e.gender_female_pct ?? ''}">
+          </div>
+
+          <div class="form-section-title">Top 5 Countries Reached</div>
+          <div class="country-row">
+            <select id="f-${id}-c1">${countryOptions(e.reach_country_1)}</select>
+            <input type="number" step="0.1" id="f-${id}-c1p" placeholder="%" value="${e.reach_country_1_pct ?? ''}">
+          </div>
+          <div class="country-row">
+            <select id="f-${id}-c2">${countryOptions(e.reach_country_2)}</select>
+            <input type="number" step="0.1" id="f-${id}-c2p" placeholder="%" value="${e.reach_country_2_pct ?? ''}">
+          </div>
+          <div class="country-row">
+            <select id="f-${id}-c3">${countryOptions(e.reach_country_3)}</select>
+            <input type="number" step="0.1" id="f-${id}-c3p" placeholder="%" value="${e.reach_country_3_pct ?? ''}">
+          </div>
+          <div class="country-row">
+            <select id="f-${id}-c4">${countryOptions(e.reach_country_4)}</select>
+            <input type="number" step="0.1" id="f-${id}-c4p" placeholder="%" value="${e.reach_country_4_pct ?? ''}">
+          </div>
+          <div class="country-row">
+            <select id="f-${id}-c5">${countryOptions(e.reach_country_5)}</select>
+            <input type="number" step="0.1" id="f-${id}-c5p" placeholder="%" value="${e.reach_country_5_pct ?? ''}">
+          </div>
+
+          <div class="form-section-title">Age Distribution</div>
+          <div class="form-group">
+            <label>18–24 %</label>
+            <input type="number" step="0.1" id="f-${id}-a1" placeholder="e.g. 7.5" value="${e.age_18_24_pct ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>25–34 %</label>
+            <input type="number" step="0.1" id="f-${id}-a2" placeholder="e.g. 38.0" value="${e.age_25_34_pct ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>35–44 %</label>
+            <input type="number" step="0.1" id="f-${id}-a3" placeholder="e.g. 32.3" value="${e.age_35_44_pct ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>45–54 %</label>
+            <input type="number" step="0.1" id="f-${id}-a4" placeholder="e.g. 15.4" value="${e.age_45_54_pct ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>55–64 %</label>
+            <input type="number" step="0.1" id="f-${id}-a5" placeholder="e.g. 4.8" value="${e.age_55_64_pct ?? ''}">
+          </div>
+          <div class="form-group">
+            <label>65+ %</label>
+            <input type="number" step="0.1" id="f-${id}-a6" placeholder="e.g. 1.8" value="${e.age_65_plus_pct ?? ''}">
           </div>
         </div>
-        <button class="btn-save" id="btn-${reel.id}" onclick="saveInsight('${reel.id}', '${handle}')">Save & Next</button>
+        <button class="btn-save" id="btn-${id}" onclick="saveInsight('${id}', '${handle}')">Save & Next</button>
       </div>
     `;
     return card;
   }
 
-  function escHtml(s) {
-    const d = document.createElement('div');
-    d.textContent = s;
-    return d.innerHTML;
-  }
-
-  function toggleCard(videoId, handle) {
+  function toggleCard(videoId) {
     if (activeCardId === videoId) {
-      // Collapse
       const old = document.getElementById('card-' + videoId);
       if (old) old.classList.remove('active');
       activeCardId = null;
       return;
     }
-    // Collapse old
-    if (activeCardId) {
-      const old = document.getElementById('card-' + activeCardId);
-      if (old) old.classList.remove('active');
-    }
-    // Expand new
+    if (activeCardId) { const old = document.getElementById('card-' + activeCardId); if (old) old.classList.remove('active'); }
     activeCardId = videoId;
     const card = document.getElementById('card-' + videoId);
-    if (card) {
-      card.classList.add('active');
-      setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
-    }
+    if (card) { card.classList.add('active'); setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50); }
   }
 
   async function saveInsight(videoId, handle) {
     const btn = document.getElementById('btn-' + videoId);
-    btn.disabled = true;
-    btn.textContent = 'Saving...';
+    btn.disabled = true; btn.textContent = 'Saving...';
 
-    const v = (id) => {
-      const el = document.getElementById(id);
-      return el ? el.value.trim() : '';
-    };
+    const v = (id) => { const el = document.getElementById(id); return el ? (el.tagName === 'SELECT' ? el.value : el.value.trim()) : ''; };
     const num = (id) => { const n = parseFloat(v(id)); return isNaN(n) ? null : n; };
     const int = (id) => { const n = parseInt(v(id), 10); return isNaN(n) ? null : n; };
 
     const body = {
       video_id: videoId,
       handle: handle,
+      views_followers_pct: num(`f-${videoId}-vf`),
+      views_non_followers_pct: num(`f-${videoId}-vnf`),
+      reach_followers_pct: num(`f-${videoId}-rf`),
+      reach_non_followers_pct: num(`f-${videoId}-rnf`),
+      source_profile_pct: num(`f-${videoId}-sp`),
+      source_reels_tab_pct: num(`f-${videoId}-sr`),
+      source_feed_pct: num(`f-${videoId}-sf`),
+      source_explore_pct: num(`f-${videoId}-se`),
+      retention_1s_pct: num(`f-${videoId}-r1`),
+      retention_2s_pct: num(`f-${videoId}-r2`),
+      retention_3s_pct: num(`f-${videoId}-r3`),
       avg_watch_time: num(`f-${videoId}-awt`),
-      retention_rate: num(`f-${videoId}-ret`),
+      followers_gained: int(`f-${videoId}-fg`),
+      shares: int(`f-${videoId}-sh`),
+      saves: int(`f-${videoId}-sv`),
+      gender_male_pct: num(`f-${videoId}-gm`),
+      gender_female_pct: num(`f-${videoId}-gf`),
       reach_country_1: v(`f-${videoId}-c1`) || null,
       reach_country_1_pct: num(`f-${videoId}-c1p`),
       reach_country_2: v(`f-${videoId}-c2`) || null,
       reach_country_2_pct: num(`f-${videoId}-c2p`),
       reach_country_3: v(`f-${videoId}-c3`) || null,
       reach_country_3_pct: num(`f-${videoId}-c3p`),
-      gender_male_pct: num(`f-${videoId}-gm`),
-      gender_female_pct: num(`f-${videoId}-gf`),
-      age_bracket_1: v(`f-${videoId}-a1`) || null,
-      age_bracket_1_pct: num(`f-${videoId}-a1p`),
-      age_bracket_2: v(`f-${videoId}-a2`) || null,
-      age_bracket_2_pct: num(`f-${videoId}-a2p`),
-      age_bracket_3: v(`f-${videoId}-a3`) || null,
-      age_bracket_3_pct: num(`f-${videoId}-a3p`),
-      age_bracket_4: v(`f-${videoId}-a4`) || null,
-      age_bracket_4_pct: num(`f-${videoId}-a4p`),
-      age_bracket_5: v(`f-${videoId}-a5`) || null,
-      age_bracket_5_pct: num(`f-${videoId}-a5p`),
-      followers_gained: int(`f-${videoId}-fg`),
-      shares: int(`f-${videoId}-sh`),
-      saves: int(`f-${videoId}-sv`),
+      reach_country_4: v(`f-${videoId}-c4`) || null,
+      reach_country_4_pct: num(`f-${videoId}-c4p`),
+      reach_country_5: v(`f-${videoId}-c5`) || null,
+      reach_country_5_pct: num(`f-${videoId}-c5p`),
+      age_18_24_pct: num(`f-${videoId}-a1`),
+      age_25_34_pct: num(`f-${videoId}-a2`),
+      age_35_44_pct: num(`f-${videoId}-a3`),
+      age_45_54_pct: num(`f-${videoId}-a4`),
+      age_55_64_pct: num(`f-${videoId}-a5`),
+      age_65_plus_pct: num(`f-${videoId}-a6`),
       updated_at: new Date().toISOString(),
     };
 
     try {
       const result = await apiUpsert('/reel_insights', body, 'video_id');
       insights[videoId] = result[0] || body;
-
-      // Update card UI
       const card = document.getElementById('card-' + videoId);
-      if (card) {
-        card.classList.add('completed');
-        card.classList.remove('active');
-        const check = card.querySelector('.reel-check');
-        if (check) { check.className = 'reel-check done'; check.textContent = '✅'; }
-      }
+      if (card) { card.classList.add('completed'); card.classList.remove('active'); const ch = card.querySelector('.reel-check'); if (ch) { ch.className = 'reel-check done'; ch.textContent = '✅'; } }
+      btn.textContent = 'Saved ✓'; btn.classList.add('saved');
 
-      btn.textContent = 'Saved ✓';
-      btn.classList.add('saved');
+      const done = reels.filter(r => insights[r.id]).length;
+      document.getElementById('progress-done').textContent = done;
+      document.getElementById('progress-fill').style.width = (reels.length > 0 ? done / reels.length * 100 : 0) + '%';
 
-      // Update progress
-      const completedCount = reels.filter(r => insights[r.id]).length;
-      document.getElementById('progress-done').textContent = completedCount;
-      const pct = reels.length > 0 ? (completedCount / reels.length * 100) : 0;
-      document.getElementById('progress-fill').style.width = pct + '%';
-
-      // Auto-advance to next incomplete reel
-      const currentIdx = reels.findIndex(r => r.id === videoId);
-      let nextIdx = -1;
-      for (let i = currentIdx + 1; i < reels.length; i++) {
-        if (!insights[reels[i].id]) { nextIdx = i; break; }
-      }
-      if (nextIdx >= 0) {
-        activeCardId = reels[nextIdx].id;
-        const nextCard = document.getElementById('card-' + activeCardId);
-        if (nextCard) {
-          nextCard.classList.add('active');
-          setTimeout(() => nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200);
-        }
-      } else {
-        activeCardId = null;
-      }
-    } catch (e) {
-      console.error('Save failed:', e);
-      btn.textContent = 'Error — Retry';
-      btn.disabled = false;
-    }
+      const cur = reels.findIndex(r => r.id === videoId);
+      let next = -1;
+      for (let i = cur + 1; i < reels.length; i++) { if (!insights[reels[i].id]) { next = i; break; } }
+      if (next >= 0) {
+        activeCardId = reels[next].id;
+        const nc = document.getElementById('card-' + activeCardId);
+        if (nc) { nc.classList.add('active'); setTimeout(() => nc.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200); }
+      } else { activeCardId = null; }
+    } catch (e) { console.error(e); btn.textContent = 'Error — Retry'; btn.disabled = false; }
   }
 
-  // URL PIN support
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlPin = urlParams.get('pin');
-  if (urlPin) {
-    sha256(urlPin).then(hash => {
-      if (hash === PIN_HASH) {
-        pinScreen.style.display = 'none';
-        app.style.display = 'block';
-        localStorage.setItem('evora-pin-ok', '1');
-        init();
-      }
-    });
-  }
+  const urlPin = new URLSearchParams(window.location.search).get('pin');
+  if (urlPin) sha256(urlPin).then(h => { if (h === PIN_HASH) unlock(); });
 </script>
 </body>
 </html>
