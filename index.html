@@ -344,7 +344,7 @@
       // Fetch existing insights for this handle
       insights = {};
       const insightRows = await apiFetch('/reel_insights', {
-        select: 'video_id,avg_watch_time,retention_rate,reach_country_1,reach_country_1_pct,reach_country_2,reach_country_2_pct,reach_country_3,reach_country_3_pct,gender_male_pct,gender_female_pct,age_bracket_1,age_bracket_1_pct,age_bracket_2,age_bracket_2_pct,age_bracket_3,age_bracket_3_pct,followers_gained,shares,saves',
+        select: 'video_id,avg_watch_time,retention_rate,reach_country_1,reach_country_1_pct,reach_country_2,reach_country_2_pct,reach_country_3,reach_country_3_pct,gender_male_pct,gender_female_pct,age_bracket_1,age_bracket_1_pct,age_bracket_2,age_bracket_2_pct,age_bracket_3,age_bracket_3_pct,age_bracket_4,age_bracket_4_pct,age_bracket_5,age_bracket_5_pct,followers_gained,shares,saves',
         handle: `eq.${handle}`,
         limit: '5000',
       });
@@ -469,7 +469,7 @@
             <input type="number" step="0.1" id="f-${reel.id}-gf" placeholder="e.g. 15" value="${existing.gender_female_pct ?? ''}">
           </div>
 
-          <div class="form-section-title">Age Split (top 3 brackets)</div>
+          <div class="form-section-title">Age Split</div>
           <div class="age-row">
             <input type="text" id="f-${reel.id}-a1" placeholder="e.g. 18-24" value="${existing.age_bracket_1 ?? ''}">
             <input type="number" step="0.1" id="f-${reel.id}-a1p" placeholder="%" value="${existing.age_bracket_1_pct ?? ''}">
@@ -481,6 +481,14 @@
           <div class="age-row">
             <input type="text" id="f-${reel.id}-a3" placeholder="e.g. 35-44" value="${existing.age_bracket_3 ?? ''}">
             <input type="number" step="0.1" id="f-${reel.id}-a3p" placeholder="%" value="${existing.age_bracket_3_pct ?? ''}">
+          </div>
+          <div class="age-row">
+            <input type="text" id="f-${reel.id}-a4" placeholder="e.g. 45-64" value="${existing.age_bracket_4 ?? ''}">
+            <input type="number" step="0.1" id="f-${reel.id}-a4p" placeholder="%" value="${existing.age_bracket_4_pct ?? ''}">
+          </div>
+          <div class="age-row">
+            <input type="text" id="f-${reel.id}-a5" placeholder="e.g. 65+" value="${existing.age_bracket_5 ?? ''}">
+            <input type="number" step="0.1" id="f-${reel.id}-a5p" placeholder="%" value="${existing.age_bracket_5_pct ?? ''}">
           </div>
 
           <div class="form-section-title">Engagement</div>
@@ -562,6 +570,10 @@
       age_bracket_2_pct: num(`f-${videoId}-a2p`),
       age_bracket_3: v(`f-${videoId}-a3`) || null,
       age_bracket_3_pct: num(`f-${videoId}-a3p`),
+      age_bracket_4: v(`f-${videoId}-a4`) || null,
+      age_bracket_4_pct: num(`f-${videoId}-a4p`),
+      age_bracket_5: v(`f-${videoId}-a5`) || null,
+      age_bracket_5_pct: num(`f-${videoId}-a5p`),
       followers_gained: int(`f-${videoId}-fg`),
       shares: int(`f-${videoId}-sh`),
       saves: int(`f-${videoId}-sv`),
