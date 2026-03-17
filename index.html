@@ -296,7 +296,7 @@
         const rows = await fetchWithRange('/videos', {
           select: 'id,url,caption,latest_views,latest_likes,uploaded_at',
           account_id: `eq.${accountId}`,
-          uploaded_at: `lt.${new Date(Date.now() - 24*60*60*1000).toISOString().slice(0,10)}`,
+          uploaded_at: `lt.${new Date().toISOString().slice(0,10)}`,
           order: 'uploaded_at.desc.nullsfirst',
         }, offset, offset + 499);
         reels.push(...rows);
