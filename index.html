@@ -208,7 +208,7 @@
     "Singapore","Kenya","Ghana","Morocco","Algeria","Iraq","Bangladesh","Ukraine","Russia","Other"
   ];
 
-  const INSIGHT_FIELDS = 'video_id,views_followers_pct,views_non_followers_pct,reach_followers_pct,reach_non_followers_pct,source_profile_pct,source_reels_tab_pct,source_feed_pct,source_explore_pct,retention_1s_pct,retention_2s_pct,retention_3s_pct,avg_watch_time,followers_gained,gender_male_pct,gender_female_pct,reach_country_1,reach_country_1_pct,reach_country_2,reach_country_2_pct,reach_country_3,reach_country_3_pct,reach_country_4,reach_country_4_pct,reach_country_5,reach_country_5_pct,age_18_24_pct,age_25_34_pct,age_35_44_pct,age_45_54_pct,age_55_64_pct,age_65_plus_pct,shares,saves';
+  const INSIGHT_FIELDS = 'video_id,views_followers_pct,views_non_followers_pct,reach_followers_pct,reach_non_followers_pct,source_profile_pct,source_reels_tab_pct,source_feed_pct,source_explore_pct,retention_1s_pct,retention_2s_pct,retention_3s_pct,avg_watch_time,followers_gained,gender_male_pct,gender_female_pct,reach_country_1,reach_country_1_pct,reach_country_2,reach_country_2_pct,reach_country_3,reach_country_3_pct,reach_country_4,reach_country_4_pct,reach_country_5,reach_country_5_pct,age_18_24_pct,age_25_34_pct,age_35_44_pct,age_45_54_pct,age_55_64_pct,age_65_plus_pct,shares,saves,like_peak_1_time,like_peak_1_pct,like_peak_2_time,like_peak_2_pct,like_peak_3_time,like_peak_3_pct';
 
   // PIN
   const PIN_HASH = '158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab';
@@ -483,6 +483,20 @@
             <label>65+ %</label>
             <input type="number" step="0.1" id="f-${id}-a6" placeholder="e.g. 1.8" value="${e.age_65_plus_pct ?? ''}">
           </div>
+
+          <div class="form-section-title">When People Liked Your Reel</div>
+          <div class="country-row">
+            <input type="text" id="f-${id}-lp1t" placeholder="Timestamp (e.g. 0:08)" value="${e.like_peak_1_time ?? ''}" style="flex:1;">
+            <input type="number" step="0.1" id="f-${id}-lp1p" placeholder="%" value="${e.like_peak_1_pct ?? ''}" style="width:70px;">
+          </div>
+          <div class="country-row">
+            <input type="text" id="f-${id}-lp2t" placeholder="Timestamp (e.g. 0:15)" value="${e.like_peak_2_time ?? ''}" style="flex:1;">
+            <input type="number" step="0.1" id="f-${id}-lp2p" placeholder="%" value="${e.like_peak_2_pct ?? ''}" style="width:70px;">
+          </div>
+          <div class="country-row">
+            <input type="text" id="f-${id}-lp3t" placeholder="Timestamp (e.g. 0:22)" value="${e.like_peak_3_time ?? ''}" style="flex:1;">
+            <input type="number" step="0.1" id="f-${id}-lp3p" placeholder="%" value="${e.like_peak_3_pct ?? ''}" style="width:70px;">
+          </div>
         </div>
         <button class="btn-save" id="btn-${id}" onclick="saveInsight('${id}', '${handle}')">Save & Next</button>
       </div>
@@ -545,6 +559,12 @@
       age_45_54_pct: num(`f-${videoId}-a4`),
       age_55_64_pct: num(`f-${videoId}-a5`),
       age_65_plus_pct: num(`f-${videoId}-a6`),
+      like_peak_1_time: v(`f-${videoId}-lp1t`) || null,
+      like_peak_1_pct: num(`f-${videoId}-lp1p`),
+      like_peak_2_time: v(`f-${videoId}-lp2t`) || null,
+      like_peak_2_pct: num(`f-${videoId}-lp2p`),
+      like_peak_3_time: v(`f-${videoId}-lp3t`) || null,
+      like_peak_3_pct: num(`f-${videoId}-lp3p`),
       updated_at: new Date().toISOString(),
     };
 
