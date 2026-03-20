@@ -508,11 +508,11 @@
           <div class="form-section-title">Gender</div>
           <div class="form-group">
             <label>Male %</label>
-            <input type="number" step="0.1" id="f-${id}-gm" placeholder="e.g. 85" value="${e.gender_male_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-gm" placeholder="e.g. 85" value="${e.gender_male_pct ?? ''}">
           </div>
           <div class="form-group">
             <label>Female %</label>
-            <input type="number" step="0.1" id="f-${id}-gf" placeholder="e.g. 15" value="${e.gender_female_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-gf" placeholder="e.g. 15" value="${e.gender_female_pct ?? ''}">
           </div>
 
           <div class="form-section-title">Top 5 Countries Reached</div>
@@ -607,8 +607,8 @@
       followers_gained: int(`f-${videoId}-fg`),
       shares: int(`f-${videoId}-sh`),
       saves: int(`f-${videoId}-sv`),
-      gender_male_pct: num(`f-${videoId}-gm`),
-      gender_female_pct: num(`f-${videoId}-gf`),
+      gender_male_pct: Math.min(num(`f-${videoId}-gm`) || 0, 100) || null,
+      gender_female_pct: Math.min(num(`f-${videoId}-gf`) || 0, 100) || null,
       reach_country_1: v(`f-${videoId}-c1`) || null,
       reach_country_1_pct: num(`f-${videoId}-c1p`),
       reach_country_2: v(`f-${videoId}-c2`) || null,
