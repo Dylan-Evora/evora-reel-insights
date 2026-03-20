@@ -442,53 +442,53 @@
           <div class="form-section-title">Views Breakdown</div>
           <div class="form-group">
             <label>Followers %</label>
-            <input type="number" step="0.1" id="f-${id}-vf" placeholder="e.g. 46.4" value="${e.views_followers_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-vf" placeholder="e.g. 46.4" value="${e.views_followers_pct ?? ''}">
           </div>
           <div class="form-group">
             <label>Non-Followers %</label>
-            <input type="number" step="0.1" id="f-${id}-vnf" placeholder="e.g. 53.6" value="${e.views_non_followers_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-vnf" placeholder="e.g. 53.6" value="${e.views_non_followers_pct ?? ''}">
           </div>
 
           <div class="form-section-title">Top Sources of Views</div>
           <div class="form-group">
             <label>Profile %</label>
-            <input type="number" step="0.1" id="f-${id}-sp" placeholder="e.g. 42.8" value="${e.source_profile_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-sp" placeholder="e.g. 42.8" value="${e.source_profile_pct ?? ''}">
           </div>
           <div class="form-group">
             <label>Reels Tab %</label>
-            <input type="number" step="0.1" id="f-${id}-sr" placeholder="e.g. 37.1" value="${e.source_reels_tab_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-sr" placeholder="e.g. 37.1" value="${e.source_reels_tab_pct ?? ''}">
           </div>
           <div class="form-group">
             <label>Feed %</label>
-            <input type="number" step="0.1" id="f-${id}-sf" placeholder="e.g. 12.1" value="${e.source_feed_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-sf" placeholder="e.g. 12.1" value="${e.source_feed_pct ?? ''}">
           </div>
           <div class="form-group">
             <label>Explore %</label>
-            <input type="number" step="0.1" id="f-${id}-se" placeholder="e.g. 7.8" value="${e.source_explore_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-se" placeholder="e.g. 7.8" value="${e.source_explore_pct ?? ''}">
           </div>
 
           <div class="form-section-title">Retention</div>
           <div class="form-group">
             <label>1 Second %</label>
-            <input type="number" step="0.1" id="f-${id}-r1" placeholder="e.g. 85.2" value="${e.retention_1s_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-r1" placeholder="e.g. 85.2" value="${e.retention_1s_pct ?? ''}">
           </div>
           <div class="form-group">
             <label>2 Seconds %</label>
-            <input type="number" step="0.1" id="f-${id}-r2" placeholder="e.g. 72.1" value="${e.retention_2s_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-r2" placeholder="e.g. 72.1" value="${e.retention_2s_pct ?? ''}">
           </div>
           <div class="form-group">
             <label>3 Seconds %</label>
-            <input type="number" step="0.1" id="f-${id}-r3" placeholder="e.g. 61.5" value="${e.retention_3s_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-r3" placeholder="e.g. 61.5" value="${e.retention_3s_pct ?? ''}">
           </div>
           <div class="form-group">
             <label>Avg Watch Time (sec)</label>
-            <input type="number" step="0.1" id="f-${id}-awt" placeholder="e.g. 4.2" value="${e.avg_watch_time ?? ''}">
+            <input type="number" step="0.1" min="0" id="f-${id}-awt" placeholder="e.g. 4.2" value="${e.avg_watch_time ?? ''}">
           </div>
 
           <div class="form-section-title">When People Liked Your Reel</div>
           <div class="country-row">
             <input type="text" id="f-${id}-lp1t" placeholder="Timestamp (e.g. 0:08)" value="${e.like_peak_1_time ?? ''}" style="flex:1;">
-            <input type="number" step="0.1" id="f-${id}-lp1p" placeholder="%" value="${e.like_peak_1_pct ?? ''}" style="width:70px;">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-lp1p" placeholder="%" value="${e.like_peak_1_pct ?? ''}" style="width:70px;">
           </div>
 
           <div class="form-section-title">Engagement</div>
@@ -518,49 +518,49 @@
           <div class="form-section-title">Top 5 Countries Reached</div>
           <div class="country-row">
             <select id="f-${id}-c1">${countryOptions(e.reach_country_1)}</select>
-            <input type="number" step="0.1" id="f-${id}-c1p" placeholder="%" value="${e.reach_country_1_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-c1p" placeholder="%" value="${e.reach_country_1_pct ?? ''}">
           </div>
           <div class="country-row">
             <select id="f-${id}-c2">${countryOptions(e.reach_country_2)}</select>
-            <input type="number" step="0.1" id="f-${id}-c2p" placeholder="%" value="${e.reach_country_2_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-c2p" placeholder="%" value="${e.reach_country_2_pct ?? ''}">
           </div>
           <div class="country-row">
             <select id="f-${id}-c3">${countryOptions(e.reach_country_3)}</select>
-            <input type="number" step="0.1" id="f-${id}-c3p" placeholder="%" value="${e.reach_country_3_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-c3p" placeholder="%" value="${e.reach_country_3_pct ?? ''}">
           </div>
           <div class="country-row">
             <select id="f-${id}-c4">${countryOptions(e.reach_country_4)}</select>
-            <input type="number" step="0.1" id="f-${id}-c4p" placeholder="%" value="${e.reach_country_4_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-c4p" placeholder="%" value="${e.reach_country_4_pct ?? ''}">
           </div>
           <div class="country-row">
             <select id="f-${id}-c5">${countryOptions(e.reach_country_5)}</select>
-            <input type="number" step="0.1" id="f-${id}-c5p" placeholder="%" value="${e.reach_country_5_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-c5p" placeholder="%" value="${e.reach_country_5_pct ?? ''}">
           </div>
 
           <div class="form-section-title">Age Distribution</div>
           <div class="form-group">
             <label>18–24 %</label>
-            <input type="number" step="0.1" id="f-${id}-a1" placeholder="e.g. 7.5" value="${e.age_18_24_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-a1" placeholder="e.g. 7.5" value="${e.age_18_24_pct ?? ''}">
           </div>
           <div class="form-group">
             <label>25–34 %</label>
-            <input type="number" step="0.1" id="f-${id}-a2" placeholder="e.g. 38.0" value="${e.age_25_34_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-a2" placeholder="e.g. 38.0" value="${e.age_25_34_pct ?? ''}">
           </div>
           <div class="form-group">
             <label>35–44 %</label>
-            <input type="number" step="0.1" id="f-${id}-a3" placeholder="e.g. 32.3" value="${e.age_35_44_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-a3" placeholder="e.g. 32.3" value="${e.age_35_44_pct ?? ''}">
           </div>
           <div class="form-group">
             <label>45–54 %</label>
-            <input type="number" step="0.1" id="f-${id}-a4" placeholder="e.g. 15.4" value="${e.age_45_54_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-a4" placeholder="e.g. 15.4" value="${e.age_45_54_pct ?? ''}">
           </div>
           <div class="form-group">
             <label>55–64 %</label>
-            <input type="number" step="0.1" id="f-${id}-a5" placeholder="e.g. 4.8" value="${e.age_55_64_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-a5" placeholder="e.g. 4.8" value="${e.age_55_64_pct ?? ''}">
           </div>
           <div class="form-group">
             <label>65+ %</label>
-            <input type="number" step="0.1" id="f-${id}-a6" placeholder="e.g. 1.8" value="${e.age_65_plus_pct ?? ''}">
+            <input type="number" step="0.1" min="0" max="100" id="f-${id}-a6" placeholder="e.g. 1.8" value="${e.age_65_plus_pct ?? ''}">
           </div>
 
         </div>
@@ -589,44 +589,45 @@
 
     const v = (id) => { const el = document.getElementById(id); return el ? (el.tagName === 'SELECT' ? el.value : el.value.trim()) : ''; };
     const num = (id) => { const n = parseFloat(v(id)); return isNaN(n) ? null : n; };
+    const pct = (id) => { const n = num(id); return n === null ? null : Math.min(Math.max(n, 0), 100); };
     const int = (id) => { const n = parseInt(v(id), 10); return isNaN(n) ? null : n; };
 
     const body = {
       video_id: videoId,
       handle: handle,
-      views_followers_pct: num(`f-${videoId}-vf`),
-      views_non_followers_pct: num(`f-${videoId}-vnf`),
-      source_profile_pct: num(`f-${videoId}-sp`),
-      source_reels_tab_pct: num(`f-${videoId}-sr`),
-      source_feed_pct: num(`f-${videoId}-sf`),
-      source_explore_pct: num(`f-${videoId}-se`),
-      retention_1s_pct: num(`f-${videoId}-r1`),
-      retention_2s_pct: num(`f-${videoId}-r2`),
-      retention_3s_pct: num(`f-${videoId}-r3`),
+      views_followers_pct: pct(`f-${videoId}-vf`),
+      views_non_followers_pct: pct(`f-${videoId}-vnf`),
+      source_profile_pct: pct(`f-${videoId}-sp`),
+      source_reels_tab_pct: pct(`f-${videoId}-sr`),
+      source_feed_pct: pct(`f-${videoId}-sf`),
+      source_explore_pct: pct(`f-${videoId}-se`),
+      retention_1s_pct: pct(`f-${videoId}-r1`),
+      retention_2s_pct: pct(`f-${videoId}-r2`),
+      retention_3s_pct: pct(`f-${videoId}-r3`),
       avg_watch_time: num(`f-${videoId}-awt`),
       followers_gained: int(`f-${videoId}-fg`),
       shares: int(`f-${videoId}-sh`),
       saves: int(`f-${videoId}-sv`),
-      gender_male_pct: Math.min(num(`f-${videoId}-gm`) || 0, 100) || null,
-      gender_female_pct: Math.min(num(`f-${videoId}-gf`) || 0, 100) || null,
+      gender_male_pct: pct(`f-${videoId}-gm`),
+      gender_female_pct: pct(`f-${videoId}-gf`),
       reach_country_1: v(`f-${videoId}-c1`) || null,
-      reach_country_1_pct: num(`f-${videoId}-c1p`),
+      reach_country_1_pct: pct(`f-${videoId}-c1p`),
       reach_country_2: v(`f-${videoId}-c2`) || null,
-      reach_country_2_pct: num(`f-${videoId}-c2p`),
+      reach_country_2_pct: pct(`f-${videoId}-c2p`),
       reach_country_3: v(`f-${videoId}-c3`) || null,
-      reach_country_3_pct: num(`f-${videoId}-c3p`),
+      reach_country_3_pct: pct(`f-${videoId}-c3p`),
       reach_country_4: v(`f-${videoId}-c4`) || null,
-      reach_country_4_pct: num(`f-${videoId}-c4p`),
+      reach_country_4_pct: pct(`f-${videoId}-c4p`),
       reach_country_5: v(`f-${videoId}-c5`) || null,
-      reach_country_5_pct: num(`f-${videoId}-c5p`),
-      age_18_24_pct: num(`f-${videoId}-a1`),
-      age_25_34_pct: num(`f-${videoId}-a2`),
-      age_35_44_pct: num(`f-${videoId}-a3`),
-      age_45_54_pct: num(`f-${videoId}-a4`),
-      age_55_64_pct: num(`f-${videoId}-a5`),
-      age_65_plus_pct: num(`f-${videoId}-a6`),
+      reach_country_5_pct: pct(`f-${videoId}-c5p`),
+      age_18_24_pct: pct(`f-${videoId}-a1`),
+      age_25_34_pct: pct(`f-${videoId}-a2`),
+      age_35_44_pct: pct(`f-${videoId}-a3`),
+      age_45_54_pct: pct(`f-${videoId}-a4`),
+      age_55_64_pct: pct(`f-${videoId}-a5`),
+      age_65_plus_pct: pct(`f-${videoId}-a6`),
       like_peak_1_time: v(`f-${videoId}-lp1t`) || null,
-      like_peak_1_pct: num(`f-${videoId}-lp1p`),
+      like_peak_1_pct: pct(`f-${videoId}-lp1p`),
       updated_at: new Date().toISOString(),
     };
 
