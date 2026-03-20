@@ -46,6 +46,19 @@
     #pin-input:focus { border-color: var(--pink); }
     #pin-error { color: #ff4444; font-size: 13px; margin-top: 12px; display: none; }
 
+    /* Qualified flag */
+    .qualified-flag {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(231,0,136,0.15); color: var(--pink);
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; padding: 3px 8px; border-radius: 6px;
+      margin-left: 8px; animation: flagPulse 2s ease-in-out infinite;
+    }
+    .qualified-flag.stale {
+      background: rgba(255,170,68,0.15); color: #ffaa44;
+    }
+    @keyframes flagPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
+
     /* App */
     #app { display: none; max-width: 720px; margin: 0 auto; padding: 20px 16px 100px; }
     .header { margin-bottom: 24px; }
@@ -208,7 +221,7 @@
     "Singapore","Kenya","Ghana","Morocco","Algeria","Iraq","Bangladesh","Ukraine","Russia","Other"
   ];
 
-  const INSIGHT_FIELDS = 'video_id,views_followers_pct,views_non_followers_pct,reach_followers_pct,reach_non_followers_pct,source_profile_pct,source_reels_tab_pct,source_feed_pct,source_explore_pct,retention_1s_pct,retention_2s_pct,retention_3s_pct,avg_watch_time,followers_gained,gender_male_pct,gender_female_pct,reach_country_1,reach_country_1_pct,reach_country_2,reach_country_2_pct,reach_country_3,reach_country_3_pct,reach_country_4,reach_country_4_pct,reach_country_5,reach_country_5_pct,age_18_24_pct,age_25_34_pct,age_35_44_pct,age_45_54_pct,age_55_64_pct,age_65_plus_pct,shares,saves,like_peak_1_time,like_peak_1_pct';
+  const INSIGHT_FIELDS = 'video_id,updated_at,views_followers_pct,views_non_followers_pct,reach_followers_pct,reach_non_followers_pct,source_profile_pct,source_reels_tab_pct,source_feed_pct,source_explore_pct,retention_1s_pct,retention_2s_pct,retention_3s_pct,avg_watch_time,followers_gained,gender_male_pct,gender_female_pct,reach_country_1,reach_country_1_pct,reach_country_2,reach_country_2_pct,reach_country_3,reach_country_3_pct,reach_country_4,reach_country_4_pct,reach_country_5,reach_country_5_pct,age_18_24_pct,age_25_34_pct,age_35_44_pct,age_45_54_pct,age_55_64_pct,age_65_plus_pct,shares,saves,like_peak_1_time,like_peak_1_pct';
 
   // PIN
   const PIN_HASH = '158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab';
@@ -294,7 +307,7 @@
       let offset = 0;
       while (true) {
         const rows = await fetchWithRange('/videos', {
-          select: 'id,url,caption,latest_views,latest_likes,uploaded_at',
+          select: 'id,url,caption,latest_views,latest_likes,uploaded_at,is_qualified,qualified_at',
           account_id: `eq.${accountId}`,
           uploaded_at: `lt.${new Date(Date.now() - 2*86400000).toISOString().slice(0,10)}`,
           order: 'uploaded_at.desc.nullsfirst',
@@ -329,7 +342,15 @@
 
     if (!reels.length) { listEl.innerHTML = '<div class="empty"><div class="icon">📭</div><p>No reels found.</p></div>'; return; }
 
-    const first = reels.findIndex(r => !insights[r.id]);
+    // Auto-open first reel that needs attention: unfilled OR qualified with stale insights
+    function needsAttention(r) {
+      if (!insights[r.id]) return true;
+      if (r.is_qualified && r.qualified_at && insights[r.id].updated_at) {
+        return new Date(insights[r.id].updated_at) < new Date(r.qualified_at);
+      }
+      return false;
+    }
+    const first = reels.findIndex(needsAttention);
     activeCardId = first >= 0 ? reels[first].id : null;
     listEl.innerHTML = '';
     reels.forEach((r, i) => listEl.appendChild(buildCard(r, i, handle, !!insights[r.id], r.id === activeCardId)));
@@ -349,11 +370,25 @@
     const e = insights[reel.id] || {};
     const id = reel.id;
 
+    // Qualified flag logic
+    let flagHtml = '';
+    if (reel.is_qualified) {
+      const insightUpdated = e.updated_at ? new Date(e.updated_at) : null;
+      const qualifiedAt = reel.qualified_at ? new Date(reel.qualified_at) : null;
+      if (done && qualifiedAt && (!insightUpdated || insightUpdated < qualifiedAt)) {
+        // Has insights but they're from before qualification — stale
+        flagHtml = '<span class="qualified-flag stale">📈 Update Insights</span>';
+      } else if (!done) {
+        // Qualified but no insights at all
+        flagHtml = '<span class="qualified-flag">📈 Qualified</span>';
+      }
+    }
+
     card.innerHTML = `
       <div class="reel-header" onclick="toggleCard('${id}')">
         <div class="reel-number">#${idx + 1}</div>
         <div class="reel-info">
-          <div class="reel-caption">${escHtml(cap)}</div>
+          <div class="reel-caption">${escHtml(cap)}${flagHtml}</div>
           <div class="reel-meta">
             <span>📅 ${date}</span><span class="sep">·</span>
             <span>👁 ${views}</span><span class="sep">·</span>
