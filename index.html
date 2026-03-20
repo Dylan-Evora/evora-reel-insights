@@ -89,6 +89,14 @@
     .progress-fill { height: 100%; background: var(--green); border-radius: 3px; transition: width 0.3s; }
     .progress-text { font-size: 13px; font-weight: 600; color: var(--text-dim); white-space: nowrap; }
     .progress-text span { color: var(--green); }
+    .update-banner {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 12px; padding: 10px 16px;
+      background: rgba(255,170,68,0.1); border: 1px solid rgba(255,170,68,0.25);
+      border-radius: var(--radius); font-size: 13px; font-weight: 600; color: #ffaa44;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .update-banner:hover { background: rgba(255,170,68,0.15); }
 
     .loading { text-align: center; padding: 60px 20px; color: var(--text-dim); font-size: 14px; }
     .loading .spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--pink); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
@@ -199,6 +207,9 @@
     <div class="progress">
       <div class="progress-text"><span id="progress-done">0</span> / <span id="progress-total">0</span> reels completed</div>
       <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+    <div id="update-banner" class="update-banner" style="display:none" onclick="scrollToFirstStale()">
+      📈 <span id="update-count">0</span> reel(s) need updated insights
     </div>
   </div>
 
@@ -340,6 +351,21 @@
     document.getElementById('progress-total').textContent = reels.length;
     document.getElementById('progress-fill').style.width = (reels.length > 0 ? done / reels.length * 100 : 0) + '%';
 
+    // Count stale qualified reels
+    const staleCount = reels.filter(r => {
+      if (!r.is_qualified || !insights[r.id]) return false;
+      if (!r.qualified_at) return false;
+      const iu = insights[r.id].updated_at ? new Date(insights[r.id].updated_at) : null;
+      return !iu || iu < new Date(r.qualified_at);
+    }).length;
+    const banner = document.getElementById('update-banner');
+    if (staleCount > 0) {
+      document.getElementById('update-count').textContent = staleCount;
+      banner.style.display = 'flex';
+    } else {
+      banner.style.display = 'none';
+    }
+
     if (!reels.length) { listEl.innerHTML = '<div class="empty"><div class="icon">📭</div><p>No reels found.</p></div>'; return; }
 
     // Auto-open first reel that needs attention: unfilled OR qualified with stale insights
@@ -355,6 +381,18 @@
     listEl.innerHTML = '';
     reels.forEach((r, i) => listEl.appendChild(buildCard(r, i, handle, !!insights[r.id], r.id === activeCardId)));
     if (activeCardId) setTimeout(() => { const el = document.getElementById('card-' + activeCardId); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
+  }
+
+  function scrollToFirstStale() {
+    const stale = reels.find(r => {
+      if (!r.is_qualified || !insights[r.id] || !r.qualified_at) return false;
+      const iu = insights[r.id].updated_at ? new Date(insights[r.id].updated_at) : null;
+      return !iu || iu < new Date(r.qualified_at);
+    });
+    if (stale) {
+      const el = document.getElementById('card-' + stale.id);
+      if (el) { toggleCard(stale.id); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    }
   }
 
   function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
