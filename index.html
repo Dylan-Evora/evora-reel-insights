@@ -318,7 +318,7 @@
       let offset = 0;
       while (true) {
         const rows = await fetchWithRange('/videos', {
-          select: 'id,url,caption,latest_views,latest_likes,uploaded_at,is_qualified,qualified_at',
+          select: 'id,url,caption,latest_views,latest_likes,uploaded_at,is_qualified,is_halo,qualified_at',
           account_id: `eq.${accountId}`,
           uploaded_at: `lt.${new Date(Date.now() - 2*86400000).toISOString().slice(0,10)}`,
           order: 'uploaded_at.desc.nullsfirst',
@@ -353,7 +353,7 @@
 
     // Count stale qualified reels
     const staleCount = reels.filter(r => {
-      if (!r.is_qualified || !insights[r.id]) return false;
+      if (!r.is_qualified || r.is_halo || !insights[r.id]) return false;
       if (!r.qualified_at) return false;
       const iu = insights[r.id].updated_at ? new Date(insights[r.id].updated_at) : null;
       return !iu || iu < new Date(r.qualified_at);
@@ -371,7 +371,7 @@
     // Auto-open first reel that needs attention: unfilled OR qualified with stale insights
     function needsAttention(r) {
       if (!insights[r.id]) return true;
-      if (r.is_qualified && r.qualified_at && insights[r.id].updated_at) {
+      if (r.is_qualified && !r.is_halo && r.qualified_at && insights[r.id].updated_at) {
         return new Date(insights[r.id].updated_at) < new Date(r.qualified_at);
       }
       return false;
@@ -385,7 +385,7 @@
 
   function scrollToFirstStale() {
     const stale = reels.find(r => {
-      if (!r.is_qualified || !insights[r.id] || !r.qualified_at) return false;
+      if (!r.is_qualified || r.is_halo || !insights[r.id] || !r.qualified_at) return false;
       const iu = insights[r.id].updated_at ? new Date(insights[r.id].updated_at) : null;
       return !iu || iu < new Date(r.qualified_at);
     });
@@ -410,7 +410,7 @@
 
     // Qualified flag logic
     let flagHtml = '';
-    if (reel.is_qualified) {
+    if (reel.is_qualified && !reel.is_halo) {
       const insightUpdated = e.updated_at ? new Date(e.updated_at) : null;
       const qualifiedAt = reel.qualified_at ? new Date(reel.qualified_at) : null;
       if (done && qualifiedAt && (!insightUpdated || insightUpdated < qualifiedAt)) {
