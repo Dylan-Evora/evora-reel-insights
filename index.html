@@ -320,8 +320,8 @@
         const rows = await fetchWithRange('/videos', {
           select: 'id,url,caption,latest_views,latest_likes,uploaded_at,is_qualified,is_halo,qualified_at',
           account_id: `eq.${accountId}`,
-          uploaded_at: `lt.${new Date(Date.now() - 2*86400000).toISOString().slice(0,10)}`,
-          order: 'uploaded_at.desc.nullsfirst',
+          and: `(uploaded_at.not.is.null,uploaded_at.lt.${new Date(Date.now() - 2*86400000).toISOString().slice(0,10)})`,
+          order: 'uploaded_at.desc',
         }, offset, offset + 499);
         reels.push(...rows);
         if (rows.length < 500) break;
