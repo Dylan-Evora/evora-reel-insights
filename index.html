@@ -635,12 +635,33 @@
       const result = await apiUpsert('/reel_insights', body, 'video_id');
       insights[videoId] = result[0] || body;
       const card = document.getElementById('card-' + videoId);
-      if (card) { card.classList.add('completed'); card.classList.remove('active'); const ch = card.querySelector('.reel-check'); if (ch) { ch.className = 'reel-check done'; ch.textContent = '✅'; } }
+      if (card) {
+        card.classList.add('completed'); card.classList.remove('active');
+        const ch = card.querySelector('.reel-check'); if (ch) { ch.className = 'reel-check done'; ch.textContent = '✅'; }
+        // Remove stale/qualified flag after successful save
+        const flag = card.querySelector('.qualified-flag');
+        if (flag) flag.remove();
+      }
       btn.textContent = 'Saved ✓'; btn.classList.add('saved');
 
       const done = reels.filter(r => insights[r.id]).length;
       document.getElementById('progress-done').textContent = done;
       document.getElementById('progress-fill').style.width = (reels.length > 0 ? done / reels.length * 100 : 0) + '%';
+
+      // Update stale banner count
+      const staleCount = reels.filter(r => {
+        if (!r.is_qualified || r.is_halo || !insights[r.id]) return false;
+        if (!r.qualified_at) return false;
+        const iu = insights[r.id].updated_at ? new Date(insights[r.id].updated_at) : null;
+        return !iu || iu < new Date(r.qualified_at);
+      }).length;
+      const banner = document.getElementById('update-banner');
+      if (staleCount > 0) {
+        document.getElementById('update-count').textContent = staleCount;
+        banner.style.display = 'flex';
+      } else {
+        banner.style.display = 'none';
+      }
 
       const cur = reels.findIndex(r => r.id === videoId);
       let next = -1;
